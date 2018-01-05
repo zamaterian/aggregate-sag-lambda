@@ -1,0 +1,98 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Aggregate Sag Lambda og Gateway
+Outputs:
+  ApiUrl:
+    Description: URL of your API endpoint
+    Value:
+      Fn::Join:
+      - ''
+      - - https://
+        - Ref: ApiGatewayApi
+        - .execute-api.
+        - Ref: AWS::Region
+        - .amazonaws.com/local
+Resources:
+  AggregateSagFunction:
+    Properties:
+      CodeUri: s3://sl.ice.cf.packages/cc95deb7dee8e58a02e3b6d46991ef7f
+      Events:
+        PutEvents:
+          Properties:
+            Method: put
+            Path: /aggregate-sag
+            RestApiId:
+              Ref: ApiGatewayApi
+          Type: Api
+      Handler: aggregate_sag_lambda.aggregate_sag
+      MemorySize: 1024
+      Policies:
+        Ref: arn:aws:iam::593176282530:role/lambda-s3-execution-role
+      Runtime: java8
+      Timeout: 20
+    Type: AWS::Serverless::Function
+  ApiGatewayApi:
+    Properties:
+      DefinitionBody:
+        basePath: /local
+        definitions:
+          Empty:
+            title: Empty Schema
+            type: object
+        info:
+          title: sodny
+          version: '2018-01-04T11:51:31Z'
+        paths:
+          /aggregate-sag:
+            options:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: 200 response
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
+                  schema:
+                    $ref: '#/definitions/Empty'
+              x-amazon-apigateway-integration:
+                passthroughBehavior: when_no_match
+                requestTemplates:
+                  application/json: '{"statusCode": 200}'
+                responses:
+                  default:
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Headers: '''Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'''
+                      method.response.header.Access-Control-Allow-Methods: '''DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'''
+                      method.response.header.Access-Control-Allow-Origin: '''*'''
+                    statusCode: '200'
+                type: mock
+            put:
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: 200 response
+                  schema:
+                    $ref: '#/definitions/Empty'
+              x-amazon-apigateway-integration:
+                contentHandling: CONVERT_TO_TEXT
+                httpMethod: POST
+                passthroughBehavior: when_no_match
+                responses:
+                  default:
+                    statusCode: '200'
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AggregateSagFunction.Arn}/invocations
+        schemes:
+        - https
+        swagger: '2.0'
+      StageName: local
+    Type: AWS::Serverless::Api
+Transform: AWS::Serverless-2016-10-31

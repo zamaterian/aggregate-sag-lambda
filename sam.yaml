@@ -1,0 +1,105 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Aggregate Sag Lambda og Gateway
+Resources:
+  AggregateSagFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: aggregate_sag_lambda.aggregate_sag
+      Runtime: java8
+      CodeUri: target/aggregate-sag-lambda-0.1.0-SNAPSHOT-standalone.jar
+      MemorySize: 1024
+      Policies: !Ref arn:aws:iam::593176282530:role/lambda-s3-execution-role
+      Timeout: 20
+      Events:
+        PutEvents:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /aggregate-sag
+            Method: put
+
+  ApiGatewayApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      # DefinitionBody:
+      #   'Fn::Transform':
+      #     Name: 'AWS::Include'
+      #       # Replace <bucket> with your bucket name
+      #     Parameters:
+      #       Location: ./aggrsag-local-swagger-apigateway.yaml
+#      DefinitionUri: aggrsag-local-swagger-apigateway.yaml
+      DefinitionBody:
+        swagger: "2.0"
+        info:
+          version: "2018-01-04T11:51:31Z"
+          title: "sodny"
+#       host: "ct45mhwyvd.execute-api.eu-west-1.amazonaws.com"
+        basePath: "/local"
+        schemes:
+        - "https"
+        paths:
+          /aggregate-sag:
+            put:
+              produces:
+                - "application/json"
+              responses:
+                '200':
+                  description: "200 response"
+                  schema:
+                    $ref: "#/definitions/Empty"
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: "200"
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AggregateSagFunction.Arn}/invocations
+                passthroughBehavior: "when_no_match"
+                httpMethod: "POST"
+                contentHandling: "CONVERT_TO_TEXT"
+                type: "aws_proxy"
+            options:
+              consumes:
+              - "application/json"
+              produces:
+              - "application/json"
+              responses:
+                '200':
+                  description: "200 response"
+                  schema:
+                    $ref: "#/definitions/Empty"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: "string"
+                    Access-Control-Allow-Methods:
+                      type: "string"
+                    Access-Control-Allow-Headers:
+                      type: "string"
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: "200"
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Methods: "'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'"
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'"
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
+                passthroughBehavior: "when_no_match"
+                requestTemplates:
+                  application/json: "{\"statusCode\": 200}"
+                type: "mock"
+        definitions:
+          Empty:
+            type: "object"
+            title: "Empty Schema"
+      StageName: local
+
+Outputs:
+  ApiUrl:
+    Description: URL of your API endpoint
+    Value: !Join
+      - ''
+      - - https://
+        - !Ref ApiGatewayApi
+        - '.execute-api.'
+        - !Ref 'AWS::Region'
+        - '.amazonaws.com/local'
