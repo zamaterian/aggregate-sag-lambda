@@ -1,6 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Aggregate Sag Lambda og Gateway
+Parameters:
+  Stage:
+    Type: String
 Resources:
   AggregateSagFunction:
     Type: AWS::Serverless::Function
@@ -35,7 +38,7 @@ Resources:
           version: "2018-01-04T11:51:31Z"
           title: "sodny"
 #       host: "ct45mhwyvd.execute-api.eu-west-1.amazonaws.com"
-        basePath: "/local"
+        basePath: "/sod"
         schemes:
         - "https"
         paths:
@@ -91,7 +94,7 @@ Resources:
           Empty:
             type: "object"
             title: "Empty Schema"
-      StageName: local
+      StageName: !Ref Stage
 
 Outputs:
   ApiUrl:

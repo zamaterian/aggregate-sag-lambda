@@ -11,6 +11,9 @@ Outputs:
         - .execute-api.
         - Ref: AWS::Region
         - .amazonaws.com/local
+Parameters:
+  Stage:
+    Type: String
 Resources:
   AggregateSagFunction:
     Properties:
@@ -33,7 +36,7 @@ Resources:
   ApiGatewayApi:
     Properties:
       DefinitionBody:
-        basePath: /local
+        basePath: /sod
         definitions:
           Empty:
             title: Empty Schema
@@ -93,6 +96,7 @@ Resources:
         schemes:
         - https
         swagger: '2.0'
-      StageName: local
+      StageName:
+        Ref: Stage
     Type: AWS::Serverless::Api
 Transform: AWS::Serverless-2016-10-31
