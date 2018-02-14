@@ -53,3 +53,7 @@ jobs:
 
          # deploy stack
          - run: aws cloudformation deploy --template-file packaged-template.yaml --stack-name sod1 --capabilities CAPABILITY_IAM --profile sandbox --parameters Stage=prod
+
+workflow:
+  - build
+  - deploy
