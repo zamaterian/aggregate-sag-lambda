@@ -41,16 +41,9 @@ jobs:
       # build jar
       - run: lein uberjar
 
-      # install python and awscli
-      - run:
-          name: Install dependencies
-          working_directory: /
-          command: |
-            apt-get -y -qq update
-            apt-get -y -qq install python3.4-dev
-            curl -O https://bootstrap.pypa.io/get-pip.py
-            python3.4 get-pip.py --user
-            pip install awscli --upgrade --user
+  deploy:
+    docker:
+      - image: mesosphere/aws-cli
 
       # build stack
       - run: aws cloudformation package --template-file sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml --profile sandbox
