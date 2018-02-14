@@ -45,9 +45,12 @@ jobs:
     docker:
       - image: mesosphere/aws-cli
 
-      # build stack
-      - run: aws cloudformation package --template-file sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml --profile sandbox
+      working_directory: ~/repo
 
-      # deploy stack
-      - deploy: 
-           command: aws cloudformation deploy --template-file packaged-template.yaml --stack-name sod1 --capabilities CAPABILITY_IAM --profile sandbox --parameters Stage=prod
+      steps:
+         # build stack
+         - run: aws cloudformation package --template-file sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml --profile sandbox
+
+         # deploy stack
+         - deploy: 
+              command: aws cloudformation deploy --template-file packaged-template.yaml --stack-name sod1 --capabilities CAPABILITY_IAM --profile sandbox --parameters Stage=prod
