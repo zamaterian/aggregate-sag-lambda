@@ -4,7 +4,7 @@ Description: Aggregate Sag Lambda og Gateway
 Parameters:
   Stage:
     Type: String
-  jar:
+  CodeUri:
     Type: String
 Resources:
   AggregateSagFunction:
@@ -12,7 +12,7 @@ Resources:
     Properties:
       Handler: aggregate_sag_lambda.aggregate_sag
       Runtime: java8
-      CodeUri: Ref! jar # target/aggregate-sag-lambda-0.1.0-SNAPSHOT-standalone.jar
+      CodeUri: !Ref CodeUri # target/aggregate-sag-lambda-0.1.0-SNAPSHOT-standalone.jar
       MemorySize: 1024
       Policies: !Ref arn:aws:iam::593176282530:role/lambda-s3-execution-role
       Timeout: 20

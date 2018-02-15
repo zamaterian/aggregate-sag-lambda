@@ -62,7 +62,7 @@ jobs:
 
     steps:
       # build stack
-      - run: aws cloudformation package --template-file /tmp/artifacts/sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml --parameters jar=/tmp/artifacts/aggregate-sag-lambda-0.1.0-SNAPSHOT-standalone.jar #--profile sandbox
+      - run: aws cloudformation package --template-file /tmp/artifacts/sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml --parameters CodeUri="/tmp/artifacts/aggregate-sag-lambda-0.1.0-SNAPSHOT-standalone.jar" #--profile sandbox
 
       # deploy stack
       - run: aws cloudformation deploy --template-file packaged-template.yaml --stack-name sod1 --capabilities CAPABILITY_IAM --parameters Stage=prod # --profile sandbox
