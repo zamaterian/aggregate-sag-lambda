@@ -41,24 +41,31 @@ jobs:
       # build jar
       - run: lein uberjar
 
-      - store_artifacts:
-          path: ~/repo/target/aggregate-sag-lambda-0.1.0-SNAPSHOT-standalone.jar
+      - run: mkdir -p artifacts
 
-      - store_artifacts:
-          path: ~/repo/sam.yaml
+      - run: cp target/aggregate-sag-lambda-0.1.0-SNAPSHOT-standalone.jar artifacts
+
+      - run: cp sam.yaml artifacts
+
+      - persist_to_workspace:
+          root: artifacts
+          paths:
+            - sam.yaml
+            - aggregate-sag-lambda-0.1.0-SNAPSHOT-standalone.jar
 
   deploy:
     docker:
       - image: mesosphere/aws-cli
 
-    working_directory: ~/repo
+    attach_workspace:
+      at: /tmp/artifacts
 
     steps:
       # build stack
-      - run: aws cloudformation package --template-file home/circleci/repo/sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml #--profile sandbox
+      - run: aws cloudformation package --template-file /tmp/artifacts/sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml --parameters jar=/tmp/artifacts/aggregate-sag-lambda-0.1.0-SNAPSHOT-standalone.jar #--profile sandbox
 
       # deploy stack
-      - run: aws cloudformation deploy --template-file packaged-template.yaml --stack-name sod1 --capabilities CAPABILITY_IAM --profile sandbox  # --parameters Stage=prod
+      - run: aws cloudformation deploy --template-file packaged-template.yaml --stack-name sod1 --capabilities CAPABILITY_IAM --parameters Stage=prod # --profile sandbox
 
 workflows:
   version: 2
