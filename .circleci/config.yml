@@ -41,9 +41,9 @@ jobs:
       # build jar
       - run: lein uberjar
 
-      - run: mkdir -p artifacts
+      - run: mkdir -p artifacts/target
 
-      - run: cp target/aggregate-sag-lambda-0.1.0-SNAPSHOT-standalone.jar artifacts
+      - run: cp target/aggregate-sag-lambda-0.1.0-SNAPSHOT-standalone.jar artifacts/target
 
       - run: cp sam.yaml artifacts
 
@@ -62,10 +62,10 @@ jobs:
 
     steps:
       # build stack
-      - run: aws cloudformation package --template-file /tmp/artifacts/sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml --parameters CodeUri=/tmp/artifacts/aggregate-sag-lambda-0.1.0-SNAPSHOT-standalone.jar #--profile sandbox
+      - run: cd /tmp/artifacts;aws cloudformation package --template-file sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml #--profile sandbox
 
       # deploy stack
-      - run: aws cloudformation deploy --template-file packaged-template.yaml --stack-name sod1 --capabilities CAPABILITY_IAM --parameters Stage=prod # --profile sandbox
+      - run: aws cloudformation deploy --template-file /tmp/artifacts/packaged-template.yaml --stack-name sod1 --capabilities CAPABILITY_IAM --parameter-overrides Stage=prod # --profile sandbox
 
 workflows:
   version: 2
