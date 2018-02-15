@@ -66,7 +66,7 @@ jobs:
 
     steps:
       # build stack
-      - run: aws cloudformation package --template-file artifacts/sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml #--profile sandbox
+      - run: aws cloudformation package --template-file ~/repo/artifacts/sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml #--profile sandbox
 
       # deploy stack
       - run: aws cloudformation deploy --template-file artifacts/packaged-template.yaml --stack-name sod1 --capabilities CAPABILITY_IAM --parameter-overrides Stage=prod # --profile sandbox
