@@ -51,7 +51,7 @@ jobs:
           root: artifacts
           paths:
             - sam.yaml
-            - aggregate-sag-lambda-0.1.0-SNAPSHOT-standalone.jar
+            - target/aggregate-sag-lambda-0.1.0-SNAPSHOT-standalone.jar
 
   deploy:
     docker:
