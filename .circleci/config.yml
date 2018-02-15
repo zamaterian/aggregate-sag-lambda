@@ -48,8 +48,10 @@ jobs:
     working_directory: ~/repo
 
     steps:
+         - checkout
+
          # build stack
-         - run: aws cloudformation package --template-file /home/circleci/repo/sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml #--profile sandbox
+         - run: aws cloudformation package --template-file sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml #--profile sandbox
 
          # deploy stack
          - run: aws cloudformation deploy --template-file packaged-template.yaml --stack-name sod1 --capabilities CAPABILITY_IAM --profile sandbox  # --parameters Stage=prod
