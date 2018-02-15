@@ -2,6 +2,10 @@
 #
 # Check https://circleci.com/docs/2.0/language-clojure/ for more details
 #
+
+defaults:
+  working_directory: ~/repo
+
 version: 2
 jobs:
   build:
@@ -13,8 +17,6 @@ jobs:
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/postgres:9.4
-
-    working_directory: ~/repo
 
     environment:
       LEIN_ROOT: "true"
@@ -58,14 +60,14 @@ jobs:
       - image: mesosphere/aws-cli
 
     attach_workspace:
-      at: /tmp/artifacts
+      at: artifacts
 
     steps:
       # build stack
-      - run: aws cloudformation package --template-file /tmp/artifacts/sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml #--profile sandbox
+      - run: cd artifacts;aws cloudformation package --template-file sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml #--profile sandbox
 
       # deploy stack
-      - run: aws cloudformation deploy --template-file /tmp/artifacts/packaged-template.yaml --stack-name sod1 --capabilities CAPABILITY_IAM --parameter-overrides Stage=prod # --profile sandbox
+      - run: aws cloudformation deploy --template-file artifacts/packaged-template.yaml --stack-name sod1 --capabilities CAPABILITY_IAM --parameter-overrides Stage=prod # --profile sandbox
 
 workflows:
   version: 2
