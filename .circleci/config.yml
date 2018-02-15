@@ -61,11 +61,11 @@ jobs:
     docker:
       - image: mesosphere/aws-cli
 
-    attach_workspace:
-      at: artifacts
-
     steps:
-      - run: pwd
+      - attach_workspace:
+          at: artifacts
+
+      - run: pwd;ls
       # build stack
       - run: aws cloudformation package --template-file ~/repo/artifacts/sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml #--profile sandbox
 
