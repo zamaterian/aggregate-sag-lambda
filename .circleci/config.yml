@@ -63,14 +63,14 @@ jobs:
 
     steps:
       - attach_workspace:
-          at: ~/repo/artifacts
+          at: /tmp/artifacts
 
-      - run: pwd;ls
+      - run: cd /tmp/artifacts
       # build stack
-      - run: aws cloudformation package --template-file ~/repo/artifacts/sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml #--profile sandbox
+      - run: aws cloudformation package --template-file sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml #--profile sandbox
 
       # deploy stack
-      - run: aws cloudformation deploy --template-file artifacts/packaged-template.yaml --stack-name sod1 --capabilities CAPABILITY_IAM --parameter-overrides Stage=prod # --profile sandbox
+      - run: aws cloudformation deploy --template-file packaged-template.yaml --stack-name sod1 --capabilities CAPABILITY_IAM --parameter-overrides Stage=prod # --profile sandbox
 
 workflows:
   version: 2
