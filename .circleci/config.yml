@@ -9,6 +9,7 @@ defaults:
 version: 2
 jobs:
   build:
+    <<: *defaults
     docker:
       # specify the version you desire here
       - image: circleci/clojure:lein-2.7.1
@@ -56,11 +57,12 @@ jobs:
             - target/aggregate-sag-lambda-0.1.0-SNAPSHOT-standalone.jar
 
   deploy:
+    <<: *defaults
     docker:
       - image: mesosphere/aws-cli
 
     attach_workspace:
-      at: ~/repo/artifacts
+      at: artifacts
 
     steps:
       # build stack
