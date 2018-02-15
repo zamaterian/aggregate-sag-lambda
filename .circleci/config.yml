@@ -44,14 +44,14 @@ jobs:
       # build jar
       - run: lein uberjar
 
-      - run: mkdir -p artifacts/target
+      - run: mkdir -p artifact/target
 
-      - run: cp target/aggregate-sag-lambda-0.1.0-SNAPSHOT-standalone.jar artifacts/target
+      - run: cp target/aggregate-sag-lambda-0.1.0-SNAPSHOT-standalone.jar artifact/target
 
-      - run: cp sam.yaml artifacts
+      - run: cp sam.yaml artifact
 
       - persist_to_workspace:
-          root: artifacts
+          root: artifact
           paths:
             - sam.yaml
             - target/aggregate-sag-lambda-0.1.0-SNAPSHOT-standalone.jar
@@ -63,9 +63,9 @@ jobs:
 
     steps:
       - attach_workspace:
-          at: /tmp/arti
+          at: /tmp/artifact
 
-      - run: cd /tmp/arti
+      - run: cd /tmp/artifact
       # build stack
       - run: aws cloudformation package --template-file sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml #--profile sandbox
 
