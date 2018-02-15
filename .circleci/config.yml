@@ -60,7 +60,7 @@ jobs:
       - image: mesosphere/aws-cli
 
     attach_workspace:
-      at: artifacts
+      at: ~/repo/artifacts
 
     steps:
       # build stack
