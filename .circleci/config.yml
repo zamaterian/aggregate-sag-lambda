@@ -66,6 +66,8 @@ jobs:
           at: /tmp/artifact
 
       - run: cd /tmp/artifact
+
+      - run: ls
       # build stack
       - run: aws cloudformation package --template-file sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml #--profile sandbox
 
