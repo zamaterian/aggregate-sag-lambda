@@ -5,15 +5,15 @@ Parameters:
   Stage:
     Type: String
 Resources:
-  AggregateSagFunctionPermission:
-    Type: AWS::Lambda::Permission
-    DependsOn:
-      - ApiGatewayApi
-      - AggregateSagFunction
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !Ref AggregateSagFunction
-      Principal: apigateway.amazonaws.com
+#  AggregateSagFunctionPermission:
+#    Type: AWS::Lambda::Permission
+#    DependsOn:
+#      - ApiGatewayApi
+#      - AggregateSagFunction
+#    Properties:
+#      Action: lambda:InvokeFunction
+#      FunctionName: !Ref AggregateSagFunction
+#      Principal: apigateway.amazonaws.com
 
   AggregateSagFunction:
     Type: AWS::Serverless::Function
@@ -30,8 +30,8 @@ Resources:
         PutEvents:
           Type: Api
           Properties:
-            RestApiId: !Ref ApiGatewayApi
-#            Path: /aggregate-sag
+#            RestApiId: !Ref ApiGatewayApi
+            Path: /aggregate-sag
             Method: put
 
   ApiGatewayApi:
