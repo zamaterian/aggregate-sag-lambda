@@ -59,7 +59,7 @@ jobs:
   deploy:
     <<: *defaults
     docker:
-      - image: mesosphere/aws-cli
+      - image: wilson208/circleci-awscli # mesosphere/aws-cli
 
     steps:
       - attach_workspace:
