@@ -5,7 +5,7 @@ Parameters:
   Stage:
     Type: String
 Resources:
-  PrepareUploadLambdaPermission:
+  AggregateSagFunctionPermission:
     Type: "AWS::Lambda::Permission"
     DependsOn:
     - ApiGatewayApi
