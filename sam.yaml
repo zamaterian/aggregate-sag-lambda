@@ -23,6 +23,8 @@ Resources:
       MemorySize: 1024
       Policies: !Ref arn:aws:iam::593176282530:role/lambda-s3-execution-role
       Timeout: 20
+      Tracing: Active
+      AutoPublishAlias: !Ref Stage
       Events:
         PutEvents:
           Type: Api
