@@ -8,7 +8,8 @@ Resources:
   AggregateSagFunctionPermission:
     Type: "AWS::Lambda::Permission"
     DependsOn:
-    - ApiGatewayApi
+      - ApiGatewayApi
+      - AggregateSagFunction
     Properties:
       Action: lambda:InvokeFunction
       FunctionName: Ref! AggregateSagFunction
