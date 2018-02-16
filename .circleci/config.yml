@@ -73,7 +73,26 @@ jobs:
 
       - run: cat packaged-template.yaml
       # deploy stack
-      - run: aws cloudformation deploy --template-file packaged-template.yaml --stack-name sod1 --capabilities CAPABILITY_IAM --region eu-west-1 --parameter-overrides Stage=prod # --profile sandbox
+      - run: aws cloudformation deploy --template-file packaged-template.yaml --stack-name sod1 --capabilities CAPABILITY_IAM --region eu-west-1 --parameter-overrides Stage=dev # --profile sandbox
+
+  deploy_test:
+    <<: *defaults
+    docker:
+      - image: wilson208/circleci-awscli # mesosphere/aws-cli
+
+    steps:
+      - attach_workspace:
+          at: /tmp/artifact
+
+   #   - run: cd /tmp/artifact
+
+    #  - run: ls
+      # build stack
+      - run: aws cloudformation package --template-file /tmp/artifact/sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml #--profile sandbox
+
+      - run: cat packaged-template.yaml
+      # deploy stack
+      - run: aws cloudformation deploy --template-file packaged-template.yaml --stack-name sod1 --capabilities CAPABILITY_IAM --region eu-west-1 --parameter-overrides Stage=test # --profile sandbox
 
 workflows:
   version: 2
@@ -83,3 +102,10 @@ workflows:
       - deploy:
           requires:
             - build
+      - hold:
+          type: approval
+          requires:
+            - deploy
+      - deploy_test:
+          requires:
+            - hold
