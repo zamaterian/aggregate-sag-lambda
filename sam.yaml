@@ -11,7 +11,7 @@ Resources:
     - ApiGatewayApi
     Properties:
       Action: lambda:InvokeFunction
-      FunctionName: Fn::Sub: arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:AggregateSagFunction
+      FunctionName: Ref! AggregateSagFunction
       Principal: apigateway.amazonaws.com
 
   AggregateSagFunction:
