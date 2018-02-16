@@ -6,7 +6,7 @@ Parameters:
     Type: String
 Resources:
   AggregateSagFunctionPermission:
-    Type: "AWS::Lambda::Permission"
+    Type: AWS::Lambda::Permission
     DependsOn:
       - ApiGatewayApi
       - AggregateSagFunction
