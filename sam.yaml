@@ -12,7 +12,7 @@ Resources:
       - AggregateSagFunction
     Properties:
       Action: lambda:InvokeFunction
-      FunctionName: Ref! AggregateSagFunction
+      FunctionName: !Ref AggregateSagFunction
       Principal: apigateway.amazonaws.com
 
   AggregateSagFunction:
