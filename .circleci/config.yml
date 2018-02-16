@@ -73,7 +73,7 @@ jobs:
 
       - run: cat packaged-template.yaml
       # deploy stack
-      - run: aws cloudformation deploy --template-file packaged-template.yaml --stack-name sod3 --capabilities CAPABILITY_IAM --region eu-west-1 --parameter-overrides Stage=prod # --profile sandbox
+      - run: aws cloudformation deploy --template-file packaged-template.yaml --stack-name sod1 --capabilities CAPABILITY_IAM --region eu-west-1 --parameter-overrides Stage=prod # --profile sandbox
 
 workflows:
   version: 2

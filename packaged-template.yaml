@@ -12,15 +12,12 @@ Outputs:
         - Ref: AWS::Region
         - .amazonaws.com/local
 Parameters:
-  CodeUri:
-    Type: String
   Stage:
     Type: String
 Resources:
   AggregateSagFunction:
     Properties:
-      CodeUri:
-        Ref: CodeUri
+      CodeUri: s3://sl.ice.cf.packages/64b4b501fe40f252fa0bf95563ca0766
       Events:
         PutEvents:
           Properties:
