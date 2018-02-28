@@ -5,15 +5,15 @@ Parameters:
   Stage:
     Type: String
 Resources:
-#  AggregateSagFunctionPermission:
-#    Type: AWS::Lambda::Permission
-#    DependsOn:
-#      - AggregateSagFunction
+  AggregateSagFunctionPermission:
+    Type: AWS::Lambda::Permission
+    DependsOn:
+      - AggregateSagFunction
 #      - ApiGatewayApi
-#    Properties:
-#      Action: lambda:InvokeFunction
-#      FunctionName: !Ref AggregateSagFunction
-#      Principal: apigateway.amazonaws.com
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref AggregateSagFunction
+      Principal: apigateway.amazonaws.com
 
   AggregateSagFunction:
     Type: AWS::Serverless::Function
