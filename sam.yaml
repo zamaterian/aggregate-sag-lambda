@@ -15,7 +15,7 @@ Resources:
 #      FunctionName: !Ref AggregateSagFunction
 #      Principal: apigateway.amazonaws.com
 
-  AggregateSagFunction:
+  AggregateSagFunc:
     Type: AWS::Serverless::Function
     Properties:
       Handler: aggregate_sag_lambda.aggregate_sag
