@@ -5,15 +5,15 @@ Parameters:
   Stage:
     Type: String
 Resources:
-  AggregateSagFunctionPermission:
-    Type: AWS::Lambda::Permission
-    DependsOn:
-      - AggregateSagFunction
-      - ApiGatewayApi
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !Ref AggregateSagFunction
-      Principal: apigateway.amazonaws.com
+#  AggregateSagFunctionPermission:
+#    Type: AWS::Lambda::Permission
+#    DependsOn:
+#      - AggregateSagFunction
+#      - ApiGatewayApi
+#    Properties:
+#      Action: lambda:InvokeFunction
+#      FunctionName: !Ref AggregateSagFunction
+#      Principal: apigateway.amazonaws.com
 
   AggregateSagFunction:
     Type: AWS::Serverless::Function
@@ -30,83 +30,9 @@ Resources:
         PutEvents:
           Type: Api
           Properties:
-            RestApiId: !Ref ApiGatewayApi
+#            RestApiId: !Ref ApiGatewayApi
             Path: /aggregate-sag
             Method: put
-
-  ApiGatewayApi:
-    Type: AWS::Serverless::Api
-    Properties:
-      # DefinitionBody:
-      #   'Fn::Transform':
-      #     Name: 'AWS::Include'
-      #       # Replace <bucket> with your bucket name
-      #     Parameters:
-      #       Location: ./aggrsag-local-swagger-apigateway.yaml
-#      DefinitionUri: aggrsag-local-swagger-apigateway.yaml
-      DefinitionBody:
-        swagger: "2.0"
-        info:
-          version: "2018-01-04T11:51:31Z"
-          title: "sodny"
-#       host: "ct45mhwyvd.execute-api.eu-west-1.amazonaws.com"
-        basePath: "/sod"
-        schemes:
-        - "https"
-        paths:
-          /aggregate-sag:
-            put:
-              produces:
-                - "application/json"
-              responses:
-                '200':
-                  description: "200 response"
-                  schema:
-                    $ref: "#/definitions/Empty"
-              x-amazon-apigateway-integration:
-                responses:
-                  default:
-                    statusCode: "200"
-                uri:
-                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AggregateSagFunction.Arn}/invocations
-                passthroughBehavior: "when_no_match"
-                httpMethod: "POST"
-                contentHandling: "CONVERT_TO_TEXT"
-                type: "aws_proxy"
-            options:
-              consumes:
-              - "application/json"
-              produces:
-              - "application/json"
-              responses:
-                '200':
-                  description: "200 response"
-                  schema:
-                    $ref: "#/definitions/Empty"
-                  headers:
-                    Access-Control-Allow-Origin:
-                      type: "string"
-                    Access-Control-Allow-Methods:
-                      type: "string"
-                    Access-Control-Allow-Headers:
-                      type: "string"
-              x-amazon-apigateway-integration:
-                responses:
-                  default:
-                    statusCode: "200"
-                    responseParameters:
-                      method.response.header.Access-Control-Allow-Methods: "'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'"
-                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'"
-                      method.response.header.Access-Control-Allow-Origin: "'*'"
-                passthroughBehavior: "when_no_match"
-                requestTemplates:
-                  application/json: "{\"statusCode\": 200}"
-                type: "mock"
-        definitions:
-          Empty:
-            type: "object"
-            title: "Empty Schema"
-      StageName: !Ref Stage
 
 Outputs:
   ApiUrl:
