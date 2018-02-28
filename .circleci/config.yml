@@ -116,9 +116,9 @@ workflows:
 #          filters:
 #            tags:
 #              only: test-.*
-      - hold-preprod:
-          type: approval
-          requires:
+#      - hold-preprod:
+#          type: approval
+#          requires:
             - deploy_test
 #      - deploy_preprod:
 #          requires:
