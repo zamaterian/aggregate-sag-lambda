@@ -34,13 +34,13 @@ Resources:
             Path: /aggregate-sag
             Method: put
 
-Outputs:
-  ApiUrl:
-    Description: URL of your API endpoint
-    Value: !Join
-      - ''
-      - - https://
-        - !Ref ApiGatewayApi
-        - '.execute-api.'
-        - !Ref 'AWS::Region'
-        - '.amazonaws.com/local'
+#Outputs:
+#  ApiUrl:
+#    Description: URL of your API endpoint
+#    Value: !Join
+#      - ''
+#      - - https://
+#        - !Ref ApiGatewayApi
+#        - '.execute-api.'
+#        - !Ref 'AWS::Region'
+#        - '.amazonaws.com/local'
