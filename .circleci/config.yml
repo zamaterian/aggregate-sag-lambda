@@ -94,9 +94,9 @@ jobs:
       # deploy stack
       - run: aws cloudformation deploy --template-file packaged-template.yaml --stack-name sod1 --capabilities CAPABILITY_IAM --region eu-west-1 --parameter-overrides Stage=test # --profile sandbox
 
-  deploy_preprod:
+#  deploy_preprod:
 
-  deploy_prod:
+#  deploy_prod:
 
 workflows:
   version: 2
@@ -120,18 +120,18 @@ workflows:
           type: approval
           requires:
             - deploy_test
-      - deploy_preprod:
-          requires:
+#      - deploy_preprod:
+#          requires:
             - hold-preprod
 #          filters:
 #            tags:
 #              only: preprod-.*
-      - hold-prod:
-          type: approval
-          requires:
+#      - hold-prod:
+#          type: approval
+#          requires:
             - deploy_preprod
-      - deploy_preprod:
-          requires:
+#      - deploy_preprod:
+#          requires:
             - hold-prod
 #          filters:
 #            tags:
