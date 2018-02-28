@@ -5,15 +5,15 @@ Parameters:
   Stage:
     Type: String
 Resources:
-  AggregateSagFunctionPermission:
-    Type: AWS::Lambda::Permission
-    DependsOn:
-      - AggregateSagFunction
+#  AggregateSagFunctionPermission:
+#    Type: AWS::Lambda::Permission
+#    DependsOn:
+#      - AggregateSagFunction
 #      - ApiGatewayApi
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !Ref AggregateSagFunction
-      Principal: apigateway.amazonaws.com
+#    Properties:
+#      Action: lambda:InvokeFunction
+#      FunctionName: !Ref AggregateSagFunction
+#      Principal: apigateway.amazonaws.com
 
   AggregateSagFunction:
     Type: AWS::Serverless::Function
@@ -22,10 +22,10 @@ Resources:
       Runtime: java8
       CodeUri: target/aggregate-sag-lambda-0.1.0-SNAPSHOT-standalone.jar
       MemorySize: 1024
-      Role: !Ref arn:aws:iam::593176282530:role/lambda-s3-execution-role
+#      Role: !Ref arn:aws:iam::593176282530:role/lambda-s3-execution-role
       Timeout: 20
       Tracing: Active
-      AutoPublishAlias: !Ref Stage
+#      AutoPublishAlias: !Ref Stage
 #      Events:
 #        PutEvents:
 #          Type: Api
