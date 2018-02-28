@@ -119,20 +119,20 @@ workflows:
 #      - hold-preprod:
 #          type: approval
 #          requires:
-            - deploy_test
+#            - deploy_test
 #      - deploy_preprod:
 #          requires:
-            - hold-preprod
+#            - hold-preprod
 #          filters:
 #            tags:
 #              only: preprod-.*
 #      - hold-prod:
 #          type: approval
 #          requires:
-            - deploy_preprod
+#            - deploy_preprod
 #      - deploy_preprod:
 #          requires:
-            - hold-prod
+#            - hold-prod
 #          filters:
 #            tags:
 #              only: prod-.*
