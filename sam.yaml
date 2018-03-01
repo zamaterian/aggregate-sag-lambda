@@ -25,7 +25,7 @@ Resources:
 #      Role: !Ref arn:aws:iam::593176282530:role/lambda-s3-execution-role
       Timeout: 20
       Tracing: Active
-#      AutoPublishAlias: !Ref Stage
+      AutoPublishAlias: !Ref Stage
 #      Events:
 #        PutEvents:
 #          Type: Api
