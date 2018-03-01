@@ -67,7 +67,7 @@ jobs:
           paths:
             - sam.yaml
             - version
-            - $A #target/aggregate-sag-lambda-$V-standalone.jar
+            - target/aggregate-sag-lambda-0.2.0-standalone.jar
 
   deploy:
     <<: *defaults
