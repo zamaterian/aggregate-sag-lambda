@@ -46,7 +46,7 @@ jobs:
 
       - run: mkdir -p artifact/target
 
-      - run: echo 'export V=`cat project.clj |head -n 1 | grep -oE "\"(.+)+$"`' >> $BASH_ENV
+      - run: echo 'export V=`cat project.clj |head -n 1 | grep -oE "\"(.+)+$" | tr -d '\"'`' >> $BASH_ENV
 
       - run: cp target/aggregate-sag-lambda-$V-standalone.jar artifact/target
 
