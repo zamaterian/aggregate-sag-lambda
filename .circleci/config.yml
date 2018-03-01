@@ -65,38 +65,15 @@ jobs:
       - attach_workspace:
           at: /tmp/artifact
 
-   #   - run: cd /tmp/artifact
-
-    #  - run: ls
       # build stack
       - run: aws cloudformation package --template-file /tmp/artifact/sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml #--profile sandbox
 
-      - run: cat packaged-template.yaml
+      - run: echo "export AGGR_SAG_LAMBDA_DEV_VERSION=0.1.0" >> $BASH_ENV
+
+      - run: aws s3 cp packaged-template.yaml "s3://dk.vurdst.ice.artifacts/aggregate-sag-lambda-$AGGR_SAG_LAMBDA_DEV_VERSION.yaml"
+
       # deploy stack
-      - run: aws cloudformation deploy --template-file packaged-template.yaml --stack-name aggrsag --capabilities CAPABILITY_IAM --region eu-west-1 --parameter-overrides Stage=dev # --profile sandbox
-
-  deploy_test:
-    <<: *defaults
-    docker:
-      - image: wilson208/circleci-awscli # mesosphere/aws-cli
-
-    steps:
-      - attach_workspace:
-          at: /tmp/artifact
-
-   #   - run: cd /tmp/artifact
-
-    #  - run: ls
-      # build stack
-      - run: aws cloudformation package --template-file /tmp/artifact/sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml #--profile sandbox
-
-      - run: cat packaged-template.yaml
-      # deploy stack
-      - run: aws cloudformation deploy --template-file packaged-template.yaml --stack-name aggrsag --capabilities CAPABILITY_IAM --region eu-west-1 --parameter-overrides Stage=test # --profile sandbox
-
-#  deploy_preprod:
-
-#  deploy_prod:
+      - run: aws cloudformation deploy --template-file packaged-template.yaml --stack-name aggrsag-dev --capabilities CAPABILITY_IAM --region eu-west-1 --parameter-overrides Stage=dev # --profile sandbox
 
 workflows:
   version: 2
@@ -106,33 +83,3 @@ workflows:
       - deploy:
           requires:
             - build
-      - hold-test:
-          type: approval
-          requires:
-            - deploy
-      - deploy_test:
-          requires:
-            - hold-test
-#          filters:
-#            tags:
-#              only: test-.*
-#      - hold-preprod:
-#          type: approval
-#          requires:
-#            - deploy_test
-#      - deploy_preprod:
-#          requires:
-#            - hold-preprod
-#          filters:
-#            tags:
-#              only: preprod-.*
-#      - hold-prod:
-#          type: approval
-#          requires:
-#            - deploy_preprod
-#      - deploy_preprod:
-#          requires:
-#            - hold-prod
-#          filters:
-#            tags:
-#              only: prod-.*
