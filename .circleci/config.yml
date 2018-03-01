@@ -48,9 +48,9 @@ jobs:
 
       - run: echo 'export V=`cat project.clj |head -n 1 | grep -oE "\"(.+)+$" | tr -d \\"\"\\"`' >> $BASH_ENV
 
-      - run: env
+      - run: echo "export A=target/aggregate-sag-lambda-$V-standalone.jar" >> $BASH_ENV
 
-      - run: cp "target/aggregate-sag-lambda-$V-standalone.jar" artifact/target
+      - run: cp $A artifact/target
 
       - run: cp sam.yaml artifact
 
