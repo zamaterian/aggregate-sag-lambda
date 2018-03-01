@@ -81,7 +81,7 @@ jobs:
       # build stack
       - run: aws cloudformation package --template-file /tmp/artifact/sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml #--profile sandbox
 
-      - run: cat version >> $BASH_ENV
+      - run: cat /tmp/artifact/version >> $BASH_ENV
 
       - run: echo "export AGGR_SAG_LAMBDA_DEV_VERSION=$V" >> $BASH_ENV
 
