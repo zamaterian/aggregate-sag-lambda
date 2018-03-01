@@ -58,12 +58,16 @@ jobs:
 
       - run: echo "export V=$V" > artifact/version
 
+      - run: ls artifact
+
+      - run: ls artifact/target
+
       - persist_to_workspace:
           root: artifact
           paths:
             - sam.yaml
             - version
-            - target/aggregate-sag-lambda-$V-standalone.jar
+            - $A #target/aggregate-sag-lambda-$V-standalone.jar
 
   deploy:
     <<: *defaults
