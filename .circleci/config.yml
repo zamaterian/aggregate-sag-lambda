@@ -73,7 +73,7 @@ jobs:
       - run: aws s3 cp packaged-template.yaml "s3://dk.vurdst.ice.artifacts/aggregate-sag-lambda-$AGGR_SAG_LAMBDA_DEV_VERSION.yaml"
 
       # deploy stack
-      - run: aws cloudformation deploy --template-file packaged-template.yaml --stack-name aggrsag-dev --capabilities CAPABILITY_IAM --region eu-west-1 --parameter-overrides Stage=dev # --profile sandbox
+      - run: aws cloudformation deploy --template-file packaged-template.yaml --stack-name aggrsag --capabilities CAPABILITY_IAM --region eu-west-1 --parameter-overrides Stage=dev # --profile sandbox
 
 workflows:
   version: 2
