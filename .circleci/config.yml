@@ -46,7 +46,9 @@ jobs:
 
       - run: mkdir -p artifact/target
 
-      - run: cp target/aggregate-sag-lambda-0.1.0-standalone.jar artifact/target
+      - run: echo 'export V=`cat project.clj |head -n 1 | grep -oE "\"(.+)+$"`' >> $BASH_ENV
+
+      - run: cp target/aggregate-sag-lambda-$V-standalone.jar artifact/target
 
       - run: cp sam.yaml artifact
 
@@ -54,7 +56,7 @@ jobs:
           root: artifact
           paths:
             - sam.yaml
-            - target/aggregate-sag-lambda-0.1.0-standalone.jar
+            - target/aggregate-sag-lambda-$V-standalone.jar
 
   deploy:
     <<: *defaults
@@ -67,8 +69,6 @@ jobs:
 
       # build stack
       - run: aws cloudformation package --template-file /tmp/artifact/sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml #--profile sandbox
-
-      - run: echo 'export V=`cat project.clj |head -n 1 | grep -oE "\"(.+)+$"`' >> $BASH_ENV
 
       - run: echo "export AGGR_SAG_LAMBDA_DEV_VERSION=$V" >> $BASH_ENV
 
