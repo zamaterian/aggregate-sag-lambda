@@ -46,7 +46,7 @@ jobs:
 
       - run: mkdir -p artifact/target
 
-      - run: cp target/aggregate-sag-lambda-0.1.0-SNAPSHOT-standalone.jar artifact/target
+      - run: cp target/aggregate-sag-lambda-0.1.0-standalone.jar artifact/target
 
       - run: cp sam.yaml artifact
 
@@ -54,7 +54,7 @@ jobs:
           root: artifact
           paths:
             - sam.yaml
-            - target/aggregate-sag-lambda-0.1.0-SNAPSHOT-standalone.jar
+            - target/aggregate-sag-lambda-0.1.0-standalone.jar
 
   deploy:
     <<: *defaults
