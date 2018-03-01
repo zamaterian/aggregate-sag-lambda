@@ -50,6 +50,8 @@ jobs:
 
       - run: echo "export A=target/aggregate-sag-lambda-$V-standalone.jar" >> $BASH_ENV
 
+      - run: env
+
       - run: cp $A artifact/target
 
       - run: cp sam.yaml artifact
