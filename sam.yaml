@@ -4,6 +4,8 @@ Description: Aggregate Sag Lambda og Gateway
 Parameters:
   Stage:
     Type: String
+  Jar:
+    Type: String
 Resources:
 #  AggregateSagFunctionPermission:
 #    Type: AWS::Lambda::Permission
@@ -20,7 +22,7 @@ Resources:
     Properties:
       Handler: aggregate_sag_lambda.aggregate_sag
       Runtime: java8
-      CodeUri: target/aggregate-sag-lambda-0.2.0-standalone.jar
+      CodeUri: !Ref Jar #target/aggregate-sag-lambda-0.2.0-standalone.jar
       MemorySize: 1024
 #      Role: !Ref arn:aws:iam::593176282530:role/lambda-s3-execution-role
       Timeout: 20
