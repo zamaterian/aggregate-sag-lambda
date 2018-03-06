@@ -81,8 +81,6 @@ jobs:
 
       - run: echo 'export EXISTS=`aws s3 ls "s3://dk.vurdst.ice.artifacts/aggregate-sag-lambda-$AGGR_SAG_LAMBDA_DEV_VERSION.yaml"`' >> $BASH_ENV
 
-      - run: echo $EXISTS
-
       - run:
           command: |
             if [ "$EXISTS" != "None" ]; then
