@@ -85,8 +85,8 @@ jobs:
 
       - run:
           command: |
-            if [ "$EXISTS" != "None" ];
-              echo "Version exists already";
+            if [ "$EXISTS" != "None" ]; then
+              echo "Version exists already"
               exit 1
             else
               exit 0
