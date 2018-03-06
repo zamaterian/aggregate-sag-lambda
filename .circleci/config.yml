@@ -83,7 +83,14 @@ jobs:
 
       - run: echo $EXISTS
 
-      - run: if ( $EXISTS != 'None' ) echo 'Version exists already';return 1;else return 0;fi
+      - run:
+          command: |
+            if [ "$EXISTS" != "None" ];
+              echo Version exists already
+              return 1
+            else
+              return 0
+            fi
 
       - run: aws s3 cp packaged-template.yaml "s3://dk.vurdst.ice.artifacts/aggregate-sag-lambda-$AGGR_SAG_LAMBDA_DEV_VERSION.yaml"
 
