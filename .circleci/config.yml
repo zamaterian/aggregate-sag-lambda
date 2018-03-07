@@ -83,7 +83,7 @@ jobs:
       - run: env
       - run:
           command: |
-            if [ "$EXISTS" = "" ]; then
+            if [ -n "$EXISTS" ]; then
               echo "Version exists already"
               exit 1
             fi
