@@ -74,7 +74,7 @@ jobs:
 
       # build stack
       - run: aws cloudformation package --template-file /tmp/artifact/sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml
-      # run: cat /tmp/artifact/version >> $BASH_ENV
+      - run: cat /tmp/artifact/version >> $BASH_ENV
       - run: echo 'export S3URL=s3://dk.vurdst.ice.artifacts/aggregate-sag-lambda-$V.yaml' >> $BASH_ENV
       - run: 'export EXISTS=`aws s3 ls $S3URL`' >> $BASH_ENV
       - run: env
@@ -90,7 +90,7 @@ jobs:
       - run: aws s3 cp packaged-template.yaml "s3://dk.vurdst.ice.artifacts/aggregate-sag-lambda-$AGGR_SAG_LAMBDA_DEV_VERSION.yaml"
 
       # deploy stack
-      - run: aws cloudformation deploy --template-file packaged-template.yaml --stack-name aggrsag-dev --capabilities CAPABILITY_IAM --region eu-west-1 --parameter-overrides Stage=dev # --profile sandbox
+      - run: aws cloudformation deploy --template-file packaged-template.yaml --stack-name aggrsag-dev --capabilities CAPABILITY_IAM --region eu-west-1 --parameter-overrides Stage=dev
 
 workflows:
   version: 2
