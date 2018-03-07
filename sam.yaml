@@ -20,7 +20,7 @@ Resources:
     Properties:
       Handler: aggregate_sag_lambda.aggregate_sag
       Runtime: java8
-      CodeUri: target/aggregate-sag-lambda-0.4.1-standalone.jar
+      CodeUri: target/aggregate-sag-lambda-0.3.0-standalone.jar
       MemorySize: 1024
       Role: arn:aws:iam::593176282530:role/lambda-s3-execution-role
       Timeout: 20

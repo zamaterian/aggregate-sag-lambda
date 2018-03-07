@@ -78,8 +78,7 @@ jobs:
     #  - run: echo 'export S3URL=s3://dk.vurdst.ice.artifacts/aggregate-sag-lambda-$V.yaml' >> $BASH_ENV
     #  - run: echo "export EXIST=`aws s3 ls $S3URL`" >> $BASH_ENV
       - run: env
-      - run:
-          command: aws s3 ls "s3://dk.vurdst.ice.artifacts/aggregate-sag-lambda-$V.yaml"
+      - run: aws s3 ls "s3://dk.vurdst.ice.artifacts/aggregate-sag-lambda-$V.yaml"
       - run:
           command: |
             if [ "$?" = 0 ]; then
