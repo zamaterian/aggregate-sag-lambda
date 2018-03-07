@@ -87,7 +87,7 @@ jobs:
               exit 1
             fi
 
-      - run: aws s3 cp packaged-template.yaml "s3://dk.vurdst.ice.artifacts/aggregate-sag-lambda-$AGGR_SAG_LAMBDA_DEV_VERSION.yaml"
+      - run: aws s3 cp packaged-template.yaml $S3URL
 
       # deploy stack
       - run: aws cloudformation deploy --template-file packaged-template.yaml --stack-name aggrsag-dev --capabilities CAPABILITY_IAM --region eu-west-1 --parameter-overrides Stage=dev
