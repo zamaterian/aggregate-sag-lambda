@@ -76,16 +76,16 @@ jobs:
       - run: aws cloudformation package --template-file /tmp/artifact/sam.yaml --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml
       - run: cat /tmp/artifact/version >> $BASH_ENV
       - run: echo 'export S3URL=s3://dk.vurdst.ice.artifacts/aggregate-sag-lambda-$V.yaml' >> $BASH_ENV
-      - run: echo 'export EXISTS=`aws s3 ls $S3URL`' >> $BASH_ENV
+      - run: echo 'export EXISTS=`aws s3 ls "$S3URL"`' >> $BASH_ENV
       - run: env
-      - run: aws s3 ls $S3URL
+      - run: aws s3 ls "$S3URL"
       - run:
           command: |
-            if [ "$EXISTS" != "None" ]; then
+            if [ "$EXISTS" = "None" ]; then
+              exit 0
+            else
               echo "Version exists already"
               exit 1
-            else
-              exit 0
             fi
 
       - run: aws s3 cp packaged-template.yaml "s3://dk.vurdst.ice.artifacts/aggregate-sag-lambda-$AGGR_SAG_LAMBDA_DEV_VERSION.yaml"
