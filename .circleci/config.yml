@@ -77,11 +77,13 @@ jobs:
       - run: cat /tmp/artifact/version >> $BASH_ENV
     #  - run: echo 'export S3URL=s3://dk.vurdst.ice.artifacts/aggregate-sag-lambda-$V.yaml' >> $BASH_ENV
     #  - run: echo "export EXIST=`aws s3 ls $S3URL`" >> $BASH_ENV
+
+      - run: aws s3 --version
+      - run: echo 'export EXISTS=`aws s3 ls "s3://dk.vurdst.ice.artifacts/aggregate-sag-lambda-$V.yaml"`' >> $BASH_ENV
       - run: env
-      - run: aws s3 ls "s3://dk.vurdst.ice.artifacts/aggregate-sag-lambda-$V.yaml"
       - run:
           command: |
-            if [ "$?" = 0 ]; then
+            if [ "$EXISTS" = "" ]; then
               echo "Version exists already"
               exit 1
             fi
