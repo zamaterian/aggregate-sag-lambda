@@ -65,6 +65,7 @@ jobs:
 
   deploy:
     <<: *defaults
+    context: dev
     docker:
       - image: wilson208/circleci-awscli # mesosphere/aws-cli
 
