@@ -65,7 +65,7 @@ jobs:
 
   deploy:
     <<: *defaults
-    context: dev
+    
     docker:
       - image: wilson208/circleci-awscli # mesosphere/aws-cli
 
@@ -96,6 +96,8 @@ workflows:
   build_and_deploy:
     jobs:
       - build
+          context: dev
       - deploy:
+          context: dev
           requires:
             - build
