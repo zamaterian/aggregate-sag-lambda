@@ -76,21 +76,17 @@ jobs:
       # build stack
       - run: cat /tmp/artifact/version >> $BASH_ENV
       - run: env
-      - run: aws cloudformation package --template-file /tmp/artifact/sam.yaml --s3-prefix "packages/aggregate-sag-lambda-$V" --s3-bucket $bucket_name --output-template-file packaged-template.yaml
-      - run: aws s3 cp packaged-template.yaml "s3://$bucket_name/packages/aggregate-sag-lambda-$V.yaml     
       - run: echo 'export EXISTS=`aws s3 ls "s3://$bucket_name/aggregate-sag-lambda-$V"`' >> $BASH_ENV
-     
       - run:
           command: |
             if [ -n "$EXISTS" ]; then
               echo "Version exists already"
               exit 1
             fi
-
-     #- run: aws s3 cp packaged-template.yaml "s3://$bucket_name/aggregate-sag-lambda-$V.yaml"
-
-      # deploy stack
-
+      
+      - run: aws cloudformation package --template-file /tmp/artifact/sam.yaml --s3-prefix "packages/aggregate-sag-lambda-$V" --s3-bucket $bucket_name --output-template-file packaged-template.yaml
+      - run: aws s3 cp packaged-template.yaml "s3://$bucket_name/packages/aggregate-sag-lambda-$V.yaml"     
+      
 workflows:
   version: 2
   build_and_deploy:
