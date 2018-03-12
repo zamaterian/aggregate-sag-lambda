@@ -74,12 +74,10 @@ jobs:
           at: /tmp/artifact
 
       # build stack
-      - run: env
-      - run: aws cloudformation package --template-file /tmp/artifact/sam.yaml --s3-prefix "aggregate-sag-lambda-$V" --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml
       - run: cat /tmp/artifact/version >> $BASH_ENV
-      - run: echo $V
-      - run: echo "aggregate-sag-lambda-$V"
-      #- run: aws s3 --version
+      - run: env
+      - run: aws cloudformation package --template-file /tmp/artifact/sam.yaml --s3-prefix "packages/aggregate-sag-lambda-$V" --s3-bucket $bucket_name/packages --output-template-file packaged-template.yaml
+            
       - run: echo 'export EXISTS=`aws s3 ls "s3://$bucket_name/aggregate-sag-lambda-$V"`' >> $BASH_ENV
      
       - run:
