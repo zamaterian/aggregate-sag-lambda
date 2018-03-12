@@ -63,7 +63,7 @@ jobs:
             - version
             - target/*
 
-  deploy:
+  pack:
     <<: *defaults
     
     docker:
@@ -74,11 +74,13 @@ jobs:
           at: /tmp/artifact
 
       # build stack
+      - run: env
       - run: aws cloudformation package --template-file /tmp/artifact/sam.yaml --s3-prefix "aggregate-sag-lambda-$V" --s3-bucket sl.ice.cf.packages --output-template-file packaged-template.yaml
       - run: cat /tmp/artifact/version >> $BASH_ENV
-      - run: aws s3 --version
-#      - run: echo 'export EXISTS=`aws s3 ls "s3://$bucket_name/aggregate-sag-lambda-$V.yaml"`' >> $BASH_ENV
-      - run: env
+      
+      #- run: aws s3 --version
+      - run: echo 'export EXISTS=`aws s3 ls "s3://$bucket_name/aggregate-sag-lambda-$V"`' >> $BASH_ENV
+     
       - run:
           command: |
             if [ -n "$EXISTS" ]; then
