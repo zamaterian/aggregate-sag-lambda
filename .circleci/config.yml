@@ -63,7 +63,7 @@ jobs:
             - version
             - target/*
 
-  pack:
+  packing:
     <<: *defaults
     
     docker:
@@ -99,7 +99,7 @@ workflows:
     jobs:
       - build:
           context: dev
-      - deploy:
+      - packing:
           context: dev
           requires:
             - build
