@@ -76,18 +76,23 @@ jobs:
       # build stack
       - run: cat /tmp/artifact/version >> $BASH_ENV
       - run: env
-      - run: echo 'export EXISTS=`aws s3 ls "s3://$bucket_name/aggregate-sag-lambda-$V"`' >> $BASH_ENV
-      - run: echo  $EXISTS
+      - run: echo 'export EXISTS=`aws s3 ls "s3://$bucket_name/packages/aggregate-sag-lambda-$V"`' >> $BASH_ENV
       - run:
           command: |
             if [ -n "$EXISTS" ]; then
               echo "Version exists already"
               exit 1
             fi
-      
+      - run: | 
+          echo "CIRCLE_BUILD_NUM=$CIRCLE_BUILD_NUM" >> build-info.log
+          echo "CIRCLE_SHA1=$CIRCLE_SHA1" >> build-info.log
+          echo "CIRCLE_REPOSITORY_URL=$CIRCLE_REPOSITORY_URL" >> build-info.log
+          
       - run: aws cloudformation package --template-file /tmp/artifact/sam.yaml --s3-prefix "packages/aggregate-sag-lambda-$V" --s3-bucket $bucket_name --output-template-file packaged-template.yaml
       - run: aws s3 cp packaged-template.yaml "s3://$bucket_name/packages/aggregate-sag-lambda-$V/package-aggregate-sag-lambda-$V.yaml"
       - run: aws s3 cp /tmp/artifact/$JAR "s3://$bucket_name/packages/aggregate-sag-lambda-$V/"
+      - run: aws s3 cp build-info.log "s3://$bucket_name/packages/aggregate-sag-lambda-$V/"
+        
       
 workflows:
   version: 2
