@@ -77,6 +77,7 @@ jobs:
       # build stack
       - run: cat /tmp/artifact/version >> $BASH_ENV
       - run: env
+      - run: find /tmp/artifact
       - run: echo 'export EXISTS=`aws s3 ls "s3://$bucket_name/packages/aggregate-sag-lambda-$V"`' >> $BASH_ENV
       - run:
           command: |
