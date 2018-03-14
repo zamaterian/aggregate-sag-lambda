@@ -53,6 +53,7 @@ jobs:
       - run: cp $A artifact/target
 
       - run: cp sam.yaml artifact
+      - run: cp .circleci/config.yml artifact/ci-config.yml
 
       - run: echo "export V=$V;export JAR=$A" > artifact/version
 
@@ -62,7 +63,7 @@ jobs:
             - sam.yaml
             - version
             - target/*
-            - .circleci/config.yml
+            - ci-config.yml
 
   packing:
     <<: *defaults
@@ -94,7 +95,7 @@ jobs:
       - run: aws s3 cp packaged-template.yaml "s3://$bucket_name/packages/aggregate-sag-lambda-$V/package-aggregate-sag-lambda-$V.yaml"
       - run: aws s3 cp /tmp/artifact/$JAR "s3://$bucket_name/packages/aggregate-sag-lambda-$V/"
       - run: aws s3 cp build-info.log "s3://$bucket_name/packages/aggregate-sag-lambda-$V/"
-      - run: aws s3 cp /tmp/artifact/.circleci/config.yml "s3://$bucket_name/packages/aggregate-sag-lambda-$V/"
+      - run: aws s3 cp /tmp/artifact/ci-config.yml "s3://$bucket_name/packages/aggregate-sag-lambda-$V/"
         
       
 workflows:
