@@ -92,6 +92,7 @@ jobs:
       - run: aws s3 cp packaged-template.yaml "s3://$bucket_name/packages/aggregate-sag-lambda-$V/package-aggregate-sag-lambda-$V.yaml"
       - run: aws s3 cp /tmp/artifact/$JAR "s3://$bucket_name/packages/aggregate-sag-lambda-$V/"
       - run: aws s3 cp build-info.log "s3://$bucket_name/packages/aggregate-sag-lambda-$V/"
+      - run: aws s3 cp .circleci/config.yml "s3://$bucket_name/packages/aggregate-sag-lambda-$V/"
         
       
 workflows:
