@@ -77,6 +77,7 @@ jobs:
       - run: cat /tmp/artifact/version >> $BASH_ENV
       - run: env
       - run: echo 'export EXISTS=`aws s3 ls "s3://$bucket_name/aggregate-sag-lambda-$V"`' >> $BASH_ENV
+      - run: echo  $EXISTS
       - run:
           command: |
             if [ -n "$EXISTS" ]; then
@@ -85,7 +86,8 @@ jobs:
             fi
       
       - run: aws cloudformation package --template-file /tmp/artifact/sam.yaml --s3-prefix "packages/aggregate-sag-lambda-$V" --s3-bucket $bucket_name --output-template-file packaged-template.yaml
-      - run: aws s3 cp packaged-template.yaml "s3://$bucket_name/packages/aggregate-sag-lambda-$V.yaml"     
+      - run: aws s3 cp packaged-template.yaml "s3://$bucket_name/packages/aggregate-sag-lambda-$V/package-aggregate-sag-lambda-$V.yaml"
+      - run: aws s3 cp $JAR "s3://$bucket_name/packages/aggregate-sag-lambda-$V/"
       
 workflows:
   version: 2
