@@ -87,7 +87,7 @@ jobs:
       
       - run: aws cloudformation package --template-file /tmp/artifact/sam.yaml --s3-prefix "packages/aggregate-sag-lambda-$V" --s3-bucket $bucket_name --output-template-file packaged-template.yaml
       - run: aws s3 cp packaged-template.yaml "s3://$bucket_name/packages/aggregate-sag-lambda-$V/package-aggregate-sag-lambda-$V.yaml"
-      - run: aws s3 cp $JAR "s3://$bucket_name/packages/aggregate-sag-lambda-$V/"
+      - run: aws s3 cp /tmp/artifact/$JAR "s3://$bucket_name/packages/aggregate-sag-lambda-$V/"
       
 workflows:
   version: 2
